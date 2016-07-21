@@ -2,16 +2,49 @@
 import ling.Function;
 import ling.Linq;
 import ling.Pair;
+import ling.Predicate;
 
 
+import javax.jws.soap.SOAPBinding;
 import java.io.Serializable;
 import java.util.*;
+
+import static ling.Linq.toStream;
 
 
 public class Main {
 
 
     public static void main(String[] args) {
+
+        class User{
+            private final String name;
+            private final String address;
+            private final int ago;
+
+            public User(String name, String address, int ago){
+
+                this.name = name;
+                this.address = address;
+                this.ago = ago;
+            }
+        }
+
+        List<User> listbase= Arrays.asList(new User("ivan","omsk",20),new User("denis","london",12),new User("sioma","moskau",100));
+
+       boolean w= Linq.toStream(listbase).any(new Predicate<User>() {
+            @Override
+            public boolean apply(User t) {
+               return t.ago<20;
+            }
+        });
+        List<User> listUser=Linq.toStream(listbase).where(a->a.ago==20||a.ago==12).toList();
+
+        Map<Integer,User> mapUser=Linq.toStream(listbase).toMapP(t -> new Pair<Integer, User>(t.ago,t));
+
+        List<Pair<Integer,User>> sde=  Linq.toStream(mapUser).whereKey(s->s==20).toList();
+///////////////////////////
+
 
         Set<Integer> sd=new HashSet<Integer>(Arrays.asList(1,2,3,4,5,67,56));
         Collection<Integer> ssss=Linq.toStream(sd).select(a->a).where(s->s>50).toCollection();

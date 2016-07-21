@@ -15,7 +15,7 @@ import java.util.*;
              Map<TKey, TValue>map=new HashMap<>();
              for (TKey tkey : mMap.keySet()) {
                  if(key.apply(tkey)){
-                     map.put(tkey,map.get(tkey));
+                     map.put(tkey,mMap.get(tkey));
                  }
              }
              return new StreamMap<>(map);
